@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Simulador interactivo de máquinas de Turing: edita reglas, prueba programas y observa cada transición.">
+  <link rel="stylesheet" href="style.css?v=9">
+  <title>Simulador | Turing Lab</title>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">T</span><span>TURING <em>LAB</em></span></a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="index.html">Inicio</a>
+      <a class="active" href="maquina-de-turing.html">Simulador</a>
+      <a href="documentacion.html">Documentación</a>
+    </nav>
+    <a class="header-cta" href="documentacion.html">¿Cómo funciona? <span>↗</span></a>
+  </header>
+
+  <main class="simulator-page container">
+    <div class="page-intro">
+      <div><p class="eyebrow">Laboratorio / Simulador</p><h1>La máquina<br><span>en movimiento.</span></h1></div>
+      <p class="intro-side">Modo 1: carga una configuración y observa la ejecución. Modo 2: decide tú cada paso y guarda lo que hiciste como configuración.</p>
+    </div>
+
+    <section class="mode-switcher" aria-label="Modos de simulación">
+      <button class="mode-button active" data-mode="classic">Turing clásica</button>
+      <button class="mode-button" data-mode="variants">Variantes modificadas</button>
+    </section>
+
+    <!-- ===== Variantes ===== -->
+    <section class="variant-lab mode-panel" id="variants-panel" hidden>
+      <div class="lab-heading">
+        <div><p class="eyebrow">Familia de modelos</p><h2>Una idea, varias máquinas.</h2></div>
+        <p>Las variantes cambian la forma de trabajar, pero conservan la regla esencial: leer, decidir, escribir y avanzar.</p>
+      </div>
+      <div class="variant-grid">
+        <button class="variant-card c-violet selected" data-variant="multi"><span>01</span><strong>Multicinta</strong><small>Varias cintas coordinadas</small></button>
+        <button class="variant-card c-pink" data-variant="nondeterministic"><span>02</span><strong>No determinista</strong><small>Elige entre varios caminos</small></button>
+        <button class="variant-card c-blue" data-variant="multidimensional"><span>03</span><strong>Multidimensional</strong><small>Se mueve en una cuadrícula</small></button>
+        <button class="variant-card c-teal" data-variant="universal"><span>04</span><strong>Universal</strong><small>Simula otras máquinas</small></button>
+      </div>
+      <div class="variant-detail">
+        <div class="variant-animation" id="variant-animation" aria-label="Animación de la variante"></div>
+        <div>
+          <p class="eyebrow" id="variant-kicker">VARIANTE 01</p>
+          <h3 id="variant-title">Máquina de varias cintas</h3>
+          <p id="variant-description"></p>
+          <div class="variant-facts">
+            <span><b>Ventaja</b><em id="variant-advantage"></em></span>
+            <span><b>Ejemplo</b><em id="variant-example"></em></span>
+          </div>
+        </div>
+      </div>
+      <div class="variant-simulation">
+        <div class="variant-simulation-heading">
+          <div><p class="eyebrow">Simulación de la variante</p><h3 id="variant-simulation-title">Comparar dos cintas</h3></div>
+          <p id="variant-simulation-help">Introduce una cadena y observa cómo trabajan las cintas modificadas.</p>
+        </div>
+        <div class="variant-controls">
+          <label for="variant-input">Entrada <input id="variant-input" value="1101" maxlength="20" inputmode="numeric"></label>
+          <button class="button button-primary" id="variant-run">Ejecutar variante <span>▶</span></button>
+          <button class="icon-button" id="variant-reset" aria-label="Reiniciar variante">↺</button>
+        </div>
+        <div class="variant-tapes">
+          <div><small>CINTA 1</small><div class="variant-tape" id="variant-tape-one"></div></div>
+          <div><small>CINTA 2</small><div class="variant-tape tape-alt" id="variant-tape-two"></div></div>
+        </div>
+        <div class="variant-progress" aria-live="polite"><span id="variant-step">PASO 0</span><span id="variant-state">LISTA</span></div>
+        <p class="variant-output" id="variant-output">Configura una entrada y ejecuta la variante.</p>
+      </div>
+    </section>
+
+    <!-- ===== Turing clásica ===== -->
+    <section class="simulator-layout">
+      <div class="machine-panel">
+        <div class="run-mode" role="group" aria-label="Modo de ejecución">
+          <button type="button" class="active" data-run-mode="auto"><i class="mode-dot"></i>Modo 1 · Ejecución automática</button>
+          <button type="button" data-run-mode="manual"><i class="mode-dot"></i>Modo 2 · Ejecución manual</button>
+        </div>
+
+        <!-- Modo 1: pantalla inicial (nueva configuración o guardada) -->
+        <div class="start-screen" id="start-screen">
+          <p class="eyebrow">Modo 1 · Ejecución automática</p>
+          <h3>¿Cómo quieres empezar?</h3>
+          <div class="start-options">
+            <button type="button" class="start-option c-violet" id="start-new"><b>Nueva configuración</b><span>Define estados, alfabeto, blanco, estado inicial, estados finales y transiciones. Al guardarla quedará disponible para usarla después.</span></button>
+            <button type="button" class="start-option c-teal" id="start-saved"><b>Usar una configuración guardada</b><span>Busca entre tus configuraciones guardadas y los ejemplos incluidos.</span></button>
+          </div>
+          <div class="config-search" id="config-search" hidden>
+            <label for="search-input">Buscar configuración</label>
+            <input id="search-input" placeholder="Escribe parte del nombre…" autocomplete="off">
+            <ul class="search-results" id="search-results"></ul>
+          </div>
+          <button type="button" class="text-button" id="back-to-run" hidden>Volver a la ejecución →</button>
+          <p class="start-note">La máquina no se puede ejecutar hasta tener una configuración guardada.</p>
+        </div>
+
+        <div class="machine-area" id="machine-area">
+          <div class="config-current" id="config-current">
+            <div><small>CONFIGURACIÓN</small><b id="config-name-label">Sin configurar</b><em class="badge" id="config-status">Sin guardar</em></div>
+            <button type="button" class="text-button" id="change-config">Cambiar configuración</button>
+          </div>
+          <p class="gate-banner" id="gate-banner" hidden></p>
+
+          <div class="panel-top">
+            <div><span class="status-dot" id="status-dot"></span><span id="machine-status">LISTA PARA EJECUTAR</span></div>
+            <span class="step-counter">PASO <b id="step-number">0</b> · CELDA <b id="head-position">0</b></span>
+          </div>
+
+          <div class="tape-wrap">
+            <div class="tape-label">CINTA <span id="tape-size">50 celdas</span></div>
+            <div class="head-marker" aria-hidden="true"><small>CABEZAL</small><span>▼</span></div>
+            <div class="tape" id="tape"><div class="tape-track" id="tape-track"></div></div>
+            <p class="tape-hint" id="tape-hint">Haz clic en una casilla para elegir dónde empieza el cabezal</p>
+            <p class="segment-info" id="segment-info">Sin modificaciones en la cinta</p>
+            <div class="tape-legend"><span class="sym-one">1</span><span class="sym-zero">0</span><span class="sym-other sym-c1">letras</span><span class="sym-blank"><b class="blank-symbol-text">^</b> blanco</span><span class="sym-sentinel"><b class="sentinel-symbol-text">#</b> centinela</span><span class="legend-modified">modificada</span></div>
+          </div>
+
+          <div class="machine-visual">
+            <div class="drum-main"><div class="drum drum-lg" data-drum="blue"></div><span class="drum-direction" id="drum-direction">● en espera</span></div>
+            <div class="machine-center">
+              <div class="state-pill" id="current-state">q0</div>
+              <div class="readout"><small>LEYENDO</small><strong id="read-symbol">1</strong></div>
+            </div>
+            <div class="drum-stack"><div class="drum drum-sm" data-drum="yellow"></div><div class="drum drum-sm" data-drum="green"></div></div>
+          </div>
+
+          <div class="transition-view">
+            <div class="transition-title">TRANSICIÓN</div>
+            <div id="transition-text">Presiona ejecutar para comenzar</div>
+            <div class="transition-rule"><span id="rule-read">1</span><b>→</b><span id="rule-write">0</span><span id="rule-move">D</span></div>
+          </div>
+          <div class="terna-now"><small>TERNA INSTANTÁNEA (estado, contenido, posición)</small><code id="terna-now">(q0, , 0)</code></div>
+
+          <div class="result-banner" id="result-banner" hidden></div>
+
+          <!-- Modo 2: decisiones del usuario -->
+          <div class="manual-panel" id="manual-panel">
+            <div class="manual-head"><b>Tu decisión</b><span>Estado <em class="tag" id="m-state">q0</em> · lee <strong id="m-read">1</strong></span></div>
+            <p class="manual-goal" id="manual-goal">Objetivo: llegar a un estado final.</p>
+            <div class="manual-group">
+              <small>1 · ¿CAMBIAR EL SÍMBOLO O CONTINUAR SIN CAMBIOS?</small>
+              <div class="seg" id="m-write"></div>
+            </div>
+            <div class="manual-group">
+              <small>2 · MOVIMIENTO</small>
+              <div class="seg seg-move" id="m-move"><button type="button" data-value="I">I · Izquierda</button><button type="button" data-value="S">S · Sin mover</button><button type="button" data-value="D" class="active">D · Derecha</button></div>
+            </div>
+            <div class="manual-group">
+              <small>3 · ¿CAMBIO DE ESTADO?</small>
+              <div class="seg" id="m-next-mode"><button type="button" data-value="stay" class="active">Quedarse en q0</button><button type="button" data-value="change">Cambiar de estado</button></div>
+              <div class="m-next-pick" id="m-next-pick" hidden><label for="m-next-select">Pasar a</label><select id="m-next-select"></select><input id="m-next-custom" placeholder="x, y, z…" maxlength="8" autocomplete="off" hidden aria-label="Nombre del nuevo estado"></div>
+            </div>
+            <p class="manual-note" id="manual-note" role="status"></p>
+            <div class="manual-actions">
+              <button type="button" class="button button-primary" id="m-apply">Aplicar paso <span>✓</span></button>
+              <button type="button" class="button button-ghost" id="m-undo">Deshacer <span>↶</span></button>
+              <button type="button" class="button button-stop" id="m-stop">Detener (paro)</button>
+              <button type="button" class="icon-button" id="m-reset" title="Reiniciar la cinta (conserva el registro de reglas)" aria-label="Reiniciar la cinta">↺</button>
+            </div>
+            <div class="manual-tape-tools">
+              <button type="button" class="button button-ghost" id="m-random">Llenar cinta al azar (Σ + blanco)</button>
+              <button type="button" class="button button-ghost" id="m-record">Grabar cinta</button>
+              <button type="button" class="button button-ghost" id="m-clear">Borrar registro</button>
+            </div>
+            <div class="recorded-tapes" id="recorded-tapes" hidden><small>CINTAS GRABADAS</small><ul id="recorded-list"></ul></div>
+            <div class="manual-save">
+              <div><b>Guardar como configuración para el Modo 1</b><small><span id="m-count">0</span> reglas registradas · se guardan también Q, Σ, blanco, estados inicial y finales, la cinta y la celda inicial</small></div>
+              <div class="manual-save-row"><input id="m-name" placeholder="Nombre de la configuración" maxlength="30" autocomplete="off"><button type="button" class="button button-primary" id="m-save">Guardar y usar en Modo 1 <span>→</span></button></div>
+            </div>
+          </div>
+
+          <div class="machine-controls">
+            <button class="button button-primary" id="run-btn">Ejecutar máquina <span>▶</span></button>
+            <button class="button button-ghost" id="step-btn">Siguiente paso <span>→</span></button>
+            <button class="icon-button" id="reset-btn" aria-label="Reiniciar">↺</button>
+          </div>
+          <p class="shortcuts auto-only"><kbd>Espacio</kbd> ejecutar/pausar <kbd>→</kbd> paso <kbd>R</kbd> reiniciar</p>
+          <p class="shortcuts manual-only"><kbd>Enter</kbd> aplicar paso <kbd>D</kbd> <kbd>I</kbd> <kbd>S</kbd> movimiento</p>
+        </div>
+      </div>
+
+      <aside class="config-panel" id="config-panel">
+        <div class="config-header"><p class="eyebrow">Configuración</p><h2>Configuracion</h2></div>
+        <p class="config-intro">Los datos de la máquina M = (Q, Σ, Γ, δ, q<sub>0</sub>, blanco, F). Los usan los dos modos.</p>
+
+        <label for="cfg-name">Nombre de la configuración</label>
+        <input class="field" id="cfg-name" maxlength="30" autocomplete="off" placeholder="Ej. Invertir bits">
+
+        <label for="cfg-states">Estados (Q) <span>separados por coma</span></label>
+        <input class="field mono" id="cfg-states" autocomplete="off" placeholder="q0, q1, q2, q✓">
+
+        <div class="field-row">
+          <div><label for="cfg-initial">Estado inicial</label><select class="field mono" id="cfg-initial"></select></div>
+          <div><label for="cfg-blank">Blanco</label><input class="field mono center" id="cfg-blank" value="^" maxlength="1" autocomplete="off"></div>
+        </div>
+
+        <label>Estados finales (F) <span>clic para marcar</span></label>
+        <div class="final-list" id="cfg-finals"></div>
+
+        <label for="cfg-alphabet">Alfabeto de entrada (Σ) <span>ej. 0, 1 o a, b</span></label>
+        <input class="field mono" id="cfg-alphabet" autocomplete="off" placeholder="0, 1">
+
+        <label for="cfg-extra">Símbolos extra de la cinta (Γ) <span>opcional, ej. X, Y</span></label>
+        <input class="field mono" id="cfg-extra" autocomplete="off" placeholder="X, Y">
+
+        <div class="sentinel-control">
+          <label class="switch"><input type="checkbox" id="sentinel-on"><span></span></label>
+          <div><b>Centinelas</b><small>Marcan el inicio y el fin de la cadena: <code><span class="sentinel-symbol-text">#</span>1011<span class="sentinel-symbol-text">#</span></code></small></div>
+          <input id="sentinel-symbol" value="#" maxlength="2" aria-label="Símbolo centinela" title="Símbolo centinela">
+        </div>
+
+        <label for="input-string">Cadena de entrada <span id="input-count">0/50</span></label>
+        <div class="input-with-icon"><input id="input-string" value="" maxlength="50" autocomplete="off" spellcheck="false"><button type="button" class="dice-button" id="random-input" title="Llenar al azar con el alfabeto Σ" aria-label="Llenar al azar con el alfabeto"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="8" cy="8" r="1.6"/><circle cx="16" cy="8" r="1.6"/><circle cx="12" cy="12" r="1.6"/><circle cx="8" cy="16" r="1.6"/><circle cx="16" cy="16" r="1.6"/></svg></button></div>
+
+        <label for="start-cell">Celda inicial <span>o haz clic en la cinta</span></label>
+        <div class="start-control"><button type="button" id="start-prev" aria-label="Celda anterior">◀</button><input type="number" id="start-cell" min="0" value="0"><button type="button" id="start-next" aria-label="Celda siguiente">▶</button></div>
+
+        <label for="speed-ms" class="auto-only-flex">Tiempo entre pasos <span id="speed-label">400 ms</span></label>
+        <div class="ms-control auto-only-flex"><input class="range" id="speed" type="range" min="0" max="2000" step="10" value="400" aria-label="Milisegundos entre pasos"><input type="number" id="speed-ms" min="0" max="5000" step="10" value="400"><span>ms</span></div>
+
+        <div class="config-block">
+          <div class="block-title">ESTADOS (Q)</div>
+          <div class="state-list" id="state-list"></div>
+        </div>
+
+        <div class="config-block">
+          <div class="block-title"><em id="rule-title">TRANSICIONES GUARDADAS</em> <span id="rule-count">00</span></div>
+          <div class="rule-list" id="rule-list"></div>
+        </div>
+
+        <div class="rule-editor">
+          <div class="block-title">FUNCIÓN DE TRANSICIÓN (δ) <button id="add-rule" title="Añadir transición" aria-label="Añadir transición">+</button></div>
+          <p class="editor-help">δ(estado, lee) = (escribe, movimiento, siguiente). Movimientos: <b>D</b> derecha, <b>I</b> izquierda, <b>S</b> sin mover.</p>
+          <div class="rule-editor-head"><span>ESTADO</span><span>LEE</span><span>ESCRIBE</span><span>MUEVE</span><span>SIGUIENTE</span><span></span></div>
+          <div id="rule-editor-rows"></div>
+          <datalist id="state-options"></datalist>
+          <datalist id="symbol-options"></datalist>
+        </div>
+
+        <div class="config-actions">
+          <button type="button" class="button button-primary" id="save-config">Guardar configuración <span>✓</span></button>
+          <div class="program-tools">
+            <button type="button" id="export-program" title="Descargar la configuración como archivo">Exportar</button>
+            <button type="button" id="import-program" title="Cargar una configuración desde un archivo">Importar</button>
+            <button type="button" id="delete-program" class="danger" hidden>Eliminar</button>
+            <input type="file" id="import-file" accept=".json,application/json" hidden>
+          </div>
+          <div class="rule-message" id="rule-message" role="status"></div>
+        </div>
+        <p class="hint">La máquina se detiene al llegar a un estado final (acepta) o cuando no hay transición para el estado y el símbolo leídos (rechaza).</p>
+      </aside>
+    </section>
+
+    <section class="execution-log">
+      <div class="log-heading"><div><p class="eyebrow">Historial de configuración</p><h2>Lo que está pasando</h2></div><span id="log-status">Esperando inicio</span></div>
+      <div class="log-table">
+        <div class="log-row log-head"><span>PASO</span><span>ESTADO</span><span>LEE</span><span>ESCRIBE</span><span>MOV.</span><span>SIGUIENTE</span><span>TERNA (estado, contenido, posición)</span></div>
+        <div id="log-rows"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="footer-drums" data-drum-strip aria-hidden="true"></div><div class="container footer-inner"><a class="brand" href="index.html"><span class="brand-mark">T</span><span>TURING <em>LAB</em></span></a><p>Experimenta. Observa. Comprende.</p><span>Turing Lab</span></div></footer>
+  <script src="index.js?v=9"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Guía visual de las máquinas de Turing: componentes, reglas, variantes, programas de ejemplo y límites de la computación.">
+  <link rel="stylesheet" href="style.css?v=9">
+  <title>Documentación | Turing Lab</title>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">T</span><span>TURING <em>LAB</em></span></a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="index.html">Inicio</a>
+      <a href="maquina-de-turing.html">Simulador</a>
+      <a class="active" href="documentacion.html">Documentación</a>
+    </nav>
+    <a class="header-cta" href="maquina-de-turing.html">Probar el simulador <span>↗</span></a>
+  </header>
+
+  <main class="docs-page container">
+    <div class="page-intro docs-intro">
+      <div><p class="eyebrow">Guía esencial / 01</p><h1>Entender la<br><span>máquina.</span></h1></div>
+      <p class="intro-side">Una guía visual para comprender el modelo que sentó las bases de la informática moderna, sin fórmulas innecesarias.</p>
+    </div>
+
+    <div class="docs-grid">
+      <aside class="docs-menu">
+        <span>EN ESTA GUÍA</span>
+        <a class="selected" href="#idea">La idea</a>
+        <a href="#componentes">Componentes</a>
+        <a href="#reglas">Reglas de transición</a>
+        <a href="#variantes">Variantes modificadas</a>
+        <a href="#programas">Programas de ejemplo</a>
+        <a href="#ejemplo">Paso a paso</a>
+        <a href="#manual">Los dos modos</a>
+        <a href="#limites">Los límites</a>
+      </aside>
+
+      <article class="docs-content">
+        <section id="idea">
+          <p class="eyebrow">01 — La idea</p>
+          <h2>Un algoritmo hecho visible.</h2>
+          <p>En 1936, Alan Turing imaginó una máquina extremadamente simple para responder una pregunta profunda: ¿qué significa calcular? Su máquina lee una cinta, cambia símbolos y se mueve según instrucciones precisas.</p>
+          <div class="quote">“Podemos pensar en una máquina que se desplaza de una casilla a otra, siguiendo una tabla de instrucciones.”<small>— Inspirado en Alan Turing, 1936</small></div>
+        </section>
+
+        <section id="componentes">
+          <p class="eyebrow">02 — Componentes</p>
+          <h2>Cuatro piezas lo hacen posible.</h2>
+          <div class="component-grid">
+            <div class="c-violet"><b>01</b><h3>La cinta</h3><p>Una secuencia de casillas que funciona como memoria. Puede extenderse indefinidamente en ambas direcciones.</p></div>
+            <div class="c-pink"><b>02</b><h3>El cabezal</h3><p>Lee el símbolo de una casilla y puede escribir otro en el mismo lugar.</p></div>
+            <div class="c-blue"><b>03</b><h3>Los estados</h3><p>Representan la situación actual de la máquina: qué está haciendo y qué debe hacer después.</p></div>
+            <div class="c-teal"><b>04</b><h3>Las reglas</h3><p>Indican qué escribir, hacia dónde moverse y a qué estado cambiar.</p></div>
+          </div>
+        </section>
+
+        <section id="reglas">
+          <p class="eyebrow">03 — Reglas de transición</p>
+          <h2>La instrucción más pequeña.</h2>
+          <p>Cada regla responde a una combinación de estado y símbolo leído. Por ejemplo:</p>
+          <div class="formula"><span class="f-state">q0</span><b>+</b><span class="f-read">1</span><strong>→</strong><span class="f-state">q0</span><b>+</b><span class="f-write">0</span><b>+</b><span class="f-move">D</span></div>
+          <p class="formula-explain">Si estoy en el estado <b>q0</b> y leo <b>1</b>, escribo <b>0</b>, me muevo a la <b>derecha</b> y sigo en <b>q0</b>.</p>
+          <div class="move-grid">
+            <div class="c-blue"><b>D</b><span>Derecha: avanza una casilla</span></div>
+            <div class="c-pink"><b>I</b><span>Izquierda: retrocede una casilla</span></div>
+            <div class="c-yellow"><b>S</b><span>Sin mover: se queda en la misma casilla (paro)</span></div>
+          </div>
+          <p>Una máquina se define con la tupla <b>M = (Q, Σ, Γ, δ, q0, ^, F)</b>: estados, alfabeto de entrada, alfabeto de la cinta, función de transición, estado inicial, símbolo blanco (<code>^</code>) y estados finales. La máquina empieza en el estado inicial y acepta al llegar a un estado de <b>F</b>. Si no existe una transición para el estado y el símbolo actuales, se detiene y <b>rechaza</b> la entrada.</p>
+          <h3 class="docs-sub">Centinelas</h3>
+          <p>Un <b>centinela</b> es un símbolo especial, por ejemplo <code>#</code>, que se coloca en ambos extremos de la entrada: <code>#1011#</code>. Así la máquina sabe dónde empieza y dónde termina la cadena sin depender de los blancos. Actívalos en el simulador con el interruptor <b>Centinelas</b> y usa el símbolo en tus reglas, como en el ejemplo «Invertir con centinelas #».</p>
+          <h3 class="docs-sub">Nombres de estado</h3>
+          <p>Los estados no tienen que llamarse q0, q1, q2… El editor te propone esos nombres base, pero puedes escribir los que quieras, como <code>x</code>, <code>y</code>, <code>z</code> o <code>par</code>. Solo <b>q0</b> (inicio) y <b>q✓</b> (aceptación) tienen un significado fijo.</p>
+        </section>
+
+        <section id="variantes">
+          <p class="eyebrow">04 — Variantes modificadas</p>
+          <h2>Más de una forma de calcular.</h2>
+          <p>Una máquina multicinta separa datos y trabajo; una no determinista explora alternativas; una multidimensional se mueve por una cuadrícula; y una universal interpreta la descripción de cualquier otra máquina. Son equivalentes en capacidad, pero algunas hacen más sencilla la descripción de un algoritmo.</p>
+          <div class="docs-callout"><b>Explóralas con animación</b><span>Abre el simulador y selecciona «Variantes modificadas» para cambiar de modelo.</span></div>
+        </section>
+
+        <section id="programas">
+          <p class="eyebrow">05 — Programas de ejemplo</p>
+          <h2>Seis máquinas para empezar.</h2>
+          <p>El simulador incluye programas listos, cada uno con una cadena de 50 símbolos. La cinta acepta letras y números, no solo 0 y 1. Elígelos en el selector <b>Programa</b> y luego modifica sus reglas para ver qué cambia.</p>
+          <div class="program-grid">
+            <div class="c-violet"><b>Invertir bits</b><span>3 reglas · 1 estado</span><p>Cambia cada 1 por 0 y cada 0 por 1.</p><code>1101 → 0010</code></div>
+            <div class="c-blue"><b>Sumar 1 en binario</b><span>6 reglas · 2 estados</span><p>Va al final y propaga el acarreo hacia la izquierda.</p><code>1011 → 1100</code></div>
+            <div class="c-pink"><b>Paridad de unos</b><span>5 reglas · 2 estados</span><p>Acepta si la cantidad de unos es par.</p><code>1001 ✓ · 1101 ✕</code></div>
+            <div class="c-orange"><b>Invertir con centinelas #</b><span>7 reglas · 3 estados</span><p>Va del # izquierdo al # derecho invirtiendo, y regresa.</p><code>#1101# → #0010#</code></div>
+            <div class="c-yellow"><b>Letras: ¿es aⁿbⁿ?</b><span>11 reglas · 4 estados</span><p>Empareja cada a con una b marcándolas con X y Y.</p><code>aabb ✓ · aab ✕</code></div>
+            <div class="c-teal"><b>¿Es palíndromo?</b><span>16 reglas · 6 estados</span><p>Compara extremos y los borra hasta vaciar la cinta.</p><code>1001 ✓ · 1011 ✕</code></div>
+          </div>
+        </section>
+
+        <section id="ejemplo">
+          <p class="eyebrow">06 — Paso a paso</p>
+          <h2>Invertir una cadena.</h2>
+          <p>Prueba <a href="maquina-de-turing.html">el simulador</a> con la entrada <code>1101</code>. La máquina recorre cada casilla, cambia los unos por ceros y los ceros por unos, hasta encontrar el blanco <code>^</code>.</p>
+          <div class="mini-flow"><span>1101</span><i>→</i><span>0101</span><i>→</i><span>0001</span><i>→</i><span>0011</span><i>→</i><span class="done">0010 ✓</span></div>
+        </section>
+
+        <section id="manual">
+          <p class="eyebrow">07 — Los dos modos</p>
+          <h2>Ejecución automática y manual.</h2>
+          <p><b>Modo 1 · Ejecución automática.</b> Al entrar, el simulador pregunta si quieres crear una <b>nueva configuración</b> o usar una <b>guardada</b> (con buscador). Una configuración nueva se guarda al pulsar «Guardar configuración», y la máquina no se puede ejecutar sin una configuración guardada. Durante la ejecución verás la cinta de 50 celdas, el cabezal resaltado, el control de milisegundos entre pasos (con pausa y reanudación) y el historial de la <b>terna instantánea</b> (estado, contenido, posición).</p>
+          <p><b>Modo 2 · Ejecución manual.</b> Define el alfabeto, llena la cinta al azar con él (incluido el blanco <code>^</code>) y haz clic en la casilla donde empieza el cabezal. En cada paso decides tres cosas:</p>
+          <div class="move-grid">
+            <div class="c-violet"><b>1</b><span>¿Cambio el símbolo por otro del alfabeto o continúo sin cambios?</span></div>
+            <div class="c-blue"><b>2</b><span>¿Me muevo a la derecha (D), a la izquierda (I) o sin mover (S)?</span></div>
+            <div class="c-pink"><b>3</b><span>¿Me quedo en el mismo estado o paso a otro?</span></div>
+          </div>
+          <p>Cada decisión queda registrada como una transición, y la cinta muestra el <b>segmento modificado</b>. Puedes llegar a un estado final o pulsar <b>Detener (paro)</b>, grabar la cinta con «Grabar cinta» y, al terminar, pulsar <b>Guardar y usar en Modo 1</b> para ejecutar automáticamente lo que hiciste. Las configuraciones también se pueden exportar e importar como archivo.</p>
+        </section>
+
+        <section id="limites">
+          <p class="eyebrow">08 — Los límites</p>
+          <h2>Lo que ninguna máquina puede hacer.</h2>
+          <p>Turing demostró que no existe una máquina capaz de decidir, para cualquier programa y entrada, si ese programa terminará o se quedará en un ciclo infinito. Es el <b>problema de la parada</b>, y marca un límite que ningún computador, por potente que sea, puede superar.</p>
+          <div class="limit-grid">
+            <div class="c-yellow"><b>Tesis de Church-Turing</b><p>Todo lo que puede calcularse mediante un procedimiento mecánico puede calcularlo una máquina de Turing.</p></div>
+            <div class="c-orange"><b>Problema de la parada</b><p>Por eso el simulador corta a los 5000 pasos: no puede saber de antemano si tus reglas forman un bucle.</p></div>
+          </div>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer"><div class="footer-drums" data-drum-strip aria-hidden="true"></div><div class="container footer-inner"><a class="brand" href="index.html"><span class="brand-mark">T</span><span>TURING <em>LAB</em></span></a><p>El conocimiento también se puede simular.</p><span>Turing Lab</span></div></footer>
+  <script src="index.js?v=9"></script>
+</body>
+</html>

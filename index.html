@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Turing Lab: aprende y experimenta con máquinas de Turing.">
+  <link rel="stylesheet" href="style.css?v=9">
+  <title>Turing Lab | Laboratorio de máquinas de Turing</title>
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html"><span class="brand-mark">T</span><span>TURING <em>LAB</em></span></a>
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a class="active" href="index.html">Inicio</a>
+      <a href="maquina-de-turing.html">Simulador</a>
+      <a href="documentacion.html">Documentación</a>
+    </nav>
+    <a class="header-cta" href="maquina-de-turing.html">Empezar a explorar <span>↗</span></a>
+  </header>
+
+  <main>
+    <section class="hero container">
+      <div class="hero-copy">
+        <p class="eyebrow">Laboratorio interactivo · Computación teórica</p>
+        <h1>Piensa como una<br><span>máquina.</span></h1>
+        <p class="hero-text">Descubre cómo una idea sencilla —leer, escribir y moverse— puede describir todo lo que un algoritmo es capaz de hacer.</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="maquina-de-turing.html">Abrir simulador <span>→</span></a>
+          <a class="text-link" href="documentacion.html">Leer la documentación <span>↗</span></a>
+        </div>
+        <div class="hero-tape" aria-hidden="true"><i class="sym-one">1</i><i class="sym-zero">0</i><i class="sym-one current">1</i><i class="sym-one">1</i><i class="sym-blank">_</i><i class="sym-blank">_</i></div>
+      </div>
+      <div class="hero-visual" aria-label="Visualización de una máquina de Turing">
+        <div class="glow glow-a"></div><div class="glow glow-b"></div><div class="glow glow-c"></div>
+        <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
+        <div class="core-machine"><div class="core-letter">T</div><div class="core-label">TURING<br>ENGINE</div></div>
+        <span class="orbit-dot dot-a"></span><span class="orbit-dot dot-b"></span><span class="orbit-dot dot-c"></span><span class="orbit-dot dot-d"></span>
+        <span class="visual-caption">01 / 03<br><b>una cinta infinita</b></span>
+      </div>
+    </section>
+
+    <section class="intro-band">
+      <div class="container stat-row">
+        <div><strong>01</strong><span>Lee un símbolo<br>de la cinta</span></div>
+        <div><strong>02</strong><span>Aplica una regla<br>de transición</span></div>
+        <div><strong>03</strong><span>Mueve el cabezal<br>y repite</span></div>
+        <a class="round-arrow" href="documentacion.html" aria-label="Ver cómo funciona">→</a>
+      </div>
+    </section>
+
+    <section class="container concept-section">
+      <div class="section-heading">
+        <p class="eyebrow">La idea central</p>
+        <h2>Una máquina mínima.<br>Un universo de posibilidades.</h2>
+      </div>
+      <div class="concept-grid">
+        <p class="large-note">La máquina de Turing no es una máquina física. Es un modelo mental para entender los límites de la computación.</p>
+        <div class="concept-card"><span class="card-number">01</span><h3>La cinta</h3><p>Memoria ilimitada dividida en casillas. Cada una guarda un símbolo.</p><a href="documentacion.html#componentes">Conocer la cinta →</a></div>
+        <div class="concept-card accent-card"><span class="card-number">02</span><h3>El cabezal</h3><p>Lee el símbolo actual, escribe uno nuevo y se desplaza por la cinta.</p><a href="maquina-de-turing.html">Verlo en acción →</a></div>
+      </div>
+    </section>
+
+    <section class="features-section">
+      <div class="container">
+        <div class="section-heading"><p class="eyebrow">En el laboratorio</p><h2>Todo lo que puedes probar.</h2></div>
+        <div class="feature-grid">
+          <a class="feature c-violet" href="maquina-de-turing.html"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5l11 7-11 7z" fill="currentColor"/></svg></span><h3>Simulador paso a paso</h3><p>Ejecuta, pausa o avanza una transición a la vez y sigue la traza completa.</p></a>
+          <a class="feature c-blue" href="maquina-de-turing.html"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h4L19 9l-4-4L4 16zM14 6l4 4" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></span><h3>Editor de reglas</h3><p>Define Q, Σ, Γ, el blanco ^, los estados finales y δ, con movimientos D, I o S.</p></a>
+          <a class="feature c-pink" href="documentacion.html#programas"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 6h14M5 12h14M5 18h9" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg></span><h3>Programas de ejemplo</h3><p>Inversión, suma binaria, paridad, palíndromos, centinelas y letras.</p></a>
+          <a class="feature c-teal" href="documentacion.html#variantes"><span><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="7" width="13" height="13" rx="2" fill="none" stroke="currentColor" stroke-width="2"/><path d="M8 4h11a2 2 0 0 1 2 2v11" fill="none" stroke="currentColor" stroke-width="2"/></svg></span><h3>Variantes animadas</h3><p>Multicinta, no determinista, multidimensional y universal.</p></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="container timeline-section">
+      <div class="section-heading"><p class="eyebrow">Un poco de historia</p><h2>De una idea a<br>los computadores.</h2></div>
+      <ol class="timeline">
+        <li class="c-violet"><b>1936</b><h3>On Computable Numbers</h3><p>Turing describe su máquina y demuestra que el problema de la parada no tiene solución.</p></li>
+        <li class="c-pink"><b>1936</b><h3>Church y Turing</h3><p>El cálculo lambda y la máquina de Turing resultan equivalentes: nace la tesis de Church-Turing.</p></li>
+        <li class="c-blue"><b>1945</b><h3>Programa almacenado</h3><p>La idea de la máquina universal inspira computadores que guardan sus programas en memoria.</p></li>
+        <li class="c-orange"><b>1950</b><h3>¿Pueden pensar las máquinas?</h3><p>Turing propone el «juego de la imitación», conocido hoy como test de Turing.</p></li>
+      </ol>
+    </section>
+
+    <section class="bombe-section">
+      <div class="container">
+        <div class="bombe-intro">
+          <div>
+            <p class="eyebrow">Pieza de referencia · 1939</p>
+            <h2>La Bombe:<br>las ideas de Turing<br><span>hechas metal.</span></h2>
+            <p class="bombe-text">Alan Turing diseñó la Bombe en Bletchley Park y Gordon Welchman la mejoró. Sus tambores de colores giraban probando combinaciones de letras hasta encontrar una que no llevara a contradicción. Entonces la máquina se detenía.</p>
+            <ol class="drum-legend">
+              <li><b>1</b><span><strong>Anillo de color</strong> Indicaba qué rotor imitaba el tambor.</span></li>
+              <li><b>2</b><span><strong>Letras A–Z</strong> Las 26 posiciones posibles de cada tambor.</span></li>
+              <li><b>3</b><span><strong>Buje metálico</strong> El eje que lo hacía girar paso a paso.</span></li>
+              <li><b>4</b><span><strong>Indicador</strong> Marcaba la letra leída en cada momento.</span></li>
+            </ol>
+          </div>
+          <figure class="drum-anatomy" aria-label="Tambor de la Bombe con sus partes numeradas">
+            <div class="drum drum-xl" data-drum="red" data-speed="14"></div>
+            <span class="drum-pin pin-1">1</span><span class="drum-pin pin-2">2</span><span class="drum-pin pin-3">3</span><span class="drum-pin pin-4">4</span>
+            <figcaption>Tambor · anatomía</figcaption>
+          </figure>
+        </div>
+
+        <div class="bombe-cabinet" id="bombe-cabinet" aria-label="Ilustración de una Bombe con tres filas de tambores">
+          <div class="cabinet-sign">BLETCHLEY PARK · BOMBE</div>
+          <div class="cabinet-body">
+            <div class="drum-bank" id="drum-bank"></div>
+            <div class="cabinet-side">
+              <div class="brass-plate"><small>DISEÑO</small>A. M. TURING<small>1939</small></div>
+              <div class="bombe-counter" aria-live="off"><small>LECTURA</small><span id="bombe-counter">A A A</span></div>
+              <div class="lamp-row"><i class="lamp"></i><i class="lamp"></i><i class="lamp"></i></div>
+              <div class="stop-lamp"><i></i><span>STOP</span></div>
+              <div class="switch-row"><span class="toggle"></span><span class="toggle on"></span><span class="toggle"></span></div>
+            </div>
+          </div>
+          <div class="cabinet-base"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+          <i class="rivet r-tl"></i><i class="rivet r-tr"></i><i class="rivet r-bl"></i><i class="rivet r-br"></i>
+        </div>
+        <p class="bombe-caption">Ilustración inspirada en la Bombe. Las filas giran a distintas velocidades, como un odómetro. Cuando se enciende <b>STOP</b>, la máquina encontró una posible solución.</p>
+      </div>
+    </section>
+
+    <section class="container team-section">
+      <div class="section-heading team-heading"><p class="eyebrow">Hecho para aprender</p><h2>Tres miradas sobre<br>una misma idea.</h2></div>
+      <div class="team-grid">
+        <article class="person"><div class="avatar avatar-one">IV</div><div><h3>Ismael Vasquez</h3><p>Investigación & lógica</p></div></article>
+        <article class="person"><div class="avatar avatar-two">EL</div><div><h3>Erika Lopez</h3><p>Diseño de experiencias</p></div></article>
+        <article class="person"><div class="avatar avatar-three">SJ</div><div><h3>Sammy Jackson</h3><p>Ingeniería & simulación</p></div></article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="footer-drums" data-drum-strip aria-hidden="true"></div><div class="container footer-inner"><a class="brand" href="index.html"><span class="brand-mark">T</span><span>TURING <em>LAB</em></span></a><p>Un espacio para hacer visible lo invisible.</p><span> Turing Lab</span></div></footer>
+  <script src="index.js?v=9"></script>
+</body>
+</html>
